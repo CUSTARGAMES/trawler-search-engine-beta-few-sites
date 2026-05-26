@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trawler - Search 1,000+ Sites</title>
+    <title>Trawler - Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     
     <style>
@@ -14,7 +14,6 @@
             color: #000;
         }
 
-        /* HOME PAGE */
         #home-page {
             display: flex;
             flex-direction: column;
@@ -132,7 +131,6 @@
         }
         .top-bar-btn:hover { background: #fff; color: #000; }
 
-        /* SEARCH RESULTS */
         .result-stats {
             font-size: 10px;
             color: #555;
@@ -172,13 +170,6 @@
             line-height: 1.5;
         }
 
-        .result-links {
-            font-size: 9px;
-            color: #888;
-            margin-top: 4px;
-        }
-
-        /* NO RESULTS */
         .no-results {
             padding: 30px;
             text-align: center;
@@ -187,7 +178,6 @@
             color: #555;
         }
 
-        /* PAGINATION */
         .pagination {
             margin-top: 20px;
             text-align: center;
@@ -204,7 +194,6 @@
         }
         .pagination button:hover { background: #ddd; }
 
-        /* RESPONSIVE */
         @media (max-width: 600px) {
             .search-label { font-size: 10px; }
             #search-input, .top-bar-input { font-size: 8px; }
@@ -232,19 +221,18 @@
         <div class="search-box">
             <div class="search-container">
                 <span class="search-label">search!</span>
-                <input type="text" id="search-input" placeholder="search 1000+ sites...">
+                <input type="text" id="search-input" placeholder="search...">
                 <button id="search-btn" onclick="performSearch()">GO</button>
             </div>
         </div>
         
         <div style="margin-top: 15px; font-size: 8px; color: #888;">
-            [ 1,000+ sites • no server needed ]
+            [ search engine • no data collected ]
         </div>
     </div>
 
     <!-- RESULTS PAGE -->
     <div id="results-page">
-        <!-- Top Bar -->
         <div class="top-bar">
             <div class="top-bar-left">
                 <img src="trawler_logo.png" class="mini-logo" alt="T">
@@ -256,7 +244,6 @@
             </div>
         </div>
 
-        <!-- SEARCH RESULTS -->
         <div id="results-container">
             <div class="result-stats" id="result-stats">
                 Loading results...
@@ -266,215 +253,205 @@
             </div>
         </div>
 
-        <!-- Pagination -->
         <div class="pagination" id="pagination-container" style="display:none;">
             <button onclick="changePage(-1)">◀</button>
             <span id="page-info">Page 1</span>
             <button onclick="changePage(1)">▶</button>
         </div>
 
-        <!-- Back to Home -->
         <a class="back-link" onclick="goHome()">[ return to home page ]</a>
     </div>
 
     <script>
         // ==========================================
-        // ALL 1,000+ SITES EMBEDDED HERE
+        // EMBEDDED DATA
         // ==========================================
 
         const allSites = [
-            // ===== SEARCH ENGINES & PORTALS =====
-            { url: "https://www.google.com", title: "Google", description: "The world's largest search engine." },
-            { url: "https://www.bing.com", title: "Bing", description: "Microsoft's search engine." },
-            { url: "https://www.yahoo.com", title: "Yahoo", description: "News, email, and search." },
-            { url: "https://www.duckduckgo.com", title: "DuckDuckGo", description: "Privacy-focused search engine." },
-            { url: "https://www.baidu.com", title: "Baidu", description: "China's largest search engine." },
-            { url: "https://www.yandex.com", title: "Yandex", description: "Russian search engine." },
-            { url: "https://www.ecosia.org", title: "Ecosia", description: "Search engine that plants trees." },
-            { url: "https://www.startpage.com", title: "Startpage", description: "Private search engine." },
-            { url: "https://www.qwant.com", title: "Qwant", description: "European privacy search engine." },
-            { url: "https://www.dogpile.com", title: "Dogpile", description: "Meta-search engine." },
-
-            // ===== SOCIAL MEDIA =====
-            { url: "https://www.facebook.com", title: "Facebook", description: "Social media platform." },
-            { url: "https://www.twitter.com", title: "Twitter", description: "Micro-blogging social network." },
-            { url: "https://www.instagram.com", title: "Instagram", description: "Photo and video sharing." },
-            { url: "https://www.linkedin.com", title: "LinkedIn", description: "Professional networking." },
-            { url: "https://www.reddit.com", title: "Reddit", description: "The front page of the internet." },
-            { url: "https://www.tiktok.com", title: "TikTok", description: "Short-form video platform." },
-            { url: "https://www.pinterest.com", title: "Pinterest", description: "Visual discovery engine." },
-            { url: "https://www.tumblr.com", title: "Tumblr", description: "Microblogging platform." },
-            { url: "https://www.snapchat.com", title: "Snapchat", description: "Disappearing photo messaging." },
-            { url: "https://www.quora.com", title: "Quora", description: "Question and answer platform." },
-
-            // ===== VIDEO & STREAMING =====
-            { url: "https://www.youtube.com", title: "YouTube", description: "World's largest video sharing platform." },
-            { url: "https://www.netflix.com", title: "Netflix", description: "Streaming movies and TV shows." },
-            { url: "https://www.hulu.com", title: "Hulu", description: "Streaming TV shows and movies." },
-            { url: "https://www.disneyplus.com", title: "Disney+", description: "Disney, Pixar, Marvel, Star Wars streaming." },
-            { url: "https://www.amazon.com/primevideo", title: "Amazon Prime Video", description: "Streaming service from Amazon." },
-            { url: "https://www.twitch.tv", title: "Twitch", description: "Live streaming for gamers." },
-            { url: "https://www.vimeo.com", title: "Vimeo", description: "High-quality video platform." },
-            { url: "https://www.dailymotion.com", title: "Dailymotion", description: "Video sharing platform." },
-            { url: "https://www.peacocktv.com", title: "Peacock", description: "NBCUniversal's streaming service." },
-            { url: "https://www.paramountplus.com", title: "Paramount+", description: "Streaming from Paramount." },
-
-            // ===== E-COMMERCE =====
-            { url: "https://www.amazon.com", title: "Amazon", description: "The world's largest online retailer." },
-            { url: "https://www.ebay.com", title: "eBay", description: "Online auction and shopping." },
-            { url: "https://www.walmart.com", title: "Walmart", description: "Retail giant online store." },
-            { url: "https://www.target.com", title: "Target", description: "Retail store online." },
-            { url: "https://www.bestbuy.com", title: "Best Buy", description: "Electronics retailer." },
-            { url: "https://www.costco.com", title: "Costco", description: "Membership warehouse club." },
-            { url: "https://www.alibaba.com", title: "Alibaba", description: "Global e-commerce platform." },
-            { url: "https://www.etsy.com", title: "Etsy", description: "Handmade and vintage items." },
-            { url: "https://www.wayfair.com", title: "Wayfair", description: "Furniture and home goods." },
-            { url: "https://www.zillow.com", title: "Zillow", description: "Real estate marketplace." },
-
-            // ===== NEWS & MEDIA =====
-            { url: "https://www.cnn.com", title: "CNN", description: "Breaking news, latest news." },
-            { url: "https://www.bbc.com", title: "BBC", description: "British Broadcasting Corporation." },
-            { url: "https://www.nytimes.com", title: "The New York Times", description: "In-depth news coverage." },
-            { url: "https://www.washingtonpost.com", title: "The Washington Post", description: "US news and politics." },
-            { url: "https://www.foxnews.com", title: "Fox News", description: "US news network." },
-            { url: "https://www.nbcnews.com", title: "NBC News", description: "US news and analysis." },
-            { url: "https://www.theguardian.com", title: "The Guardian", description: "International news." },
-            { url: "https://www.reuters.com", title: "Reuters", description: "Global news agency." },
-            { url: "https://www.bloomberg.com", title: "Bloomberg", description: "Financial news and data." },
-            { url: "https://www.forbes.com", title: "Forbes", description: "Business and financial news." },
-
-            // ===== TECH & DEVELOPERS =====
-            { url: "https://www.github.com", title: "GitHub", description: "Code hosting and collaboration." },
-            { url: "https://www.stackoverflow.com", title: "Stack Overflow", description: "Q&A for programmers." },
-            { url: "https://www.dev.to", title: "Dev.to", description: "Developer community." },
-            { url: "https://www.medium.com", title: "Medium", description: "Writing platform." },
-            { url: "https://www.hackernews.com", title: "Hacker News", description: "Tech news aggregator." },
-            { url: "https://www.codepen.io", title: "CodePen", description: "Front-end developer playground." },
-            { url: "https://www.jsfiddle.net", title: "JSFiddle", description: "Online code editor." },
-            { url: "https://www.replit.com", title: "Replit", description: "Online coding environment." },
-            { url: "https://www.glitch.com", title: "Glitch", description: "Build and host web apps." },
-            { url: "https://www.codesandbox.io", title: "CodeSandbox", description: "Online IDE for web development." },
-
-            // ===== EDUCATION =====
-            { url: "https://www.wikipedia.org", title: "Wikipedia", description: "The free encyclopedia." },
-            { url: "https://www.khanacademy.org", title: "Khan Academy", description: "Free online education." },
-            { url: "https://www.coursera.org", title: "Coursera", description: "Online courses from top universities." },
-            { url: "https://www.udemy.com", title: "Udemy", description: "Online learning marketplace." },
-            { url: "https://www.edx.org", title: "edX", description: "Online courses from Harvard, MIT, etc." },
-            { url: "https://www.udacity.com", title: "Udacity", description: "Tech education and nanodegrees." },
-            { url: "https://www.codecademy.com", title: "Codecademy", description: "Learn to code interactively." },
-            { url: "https://www.freecodecamp.org", title: "freeCodeCamp", description: "Free coding bootcamp." },
-            { url: "https://www.w3schools.com", title: "W3Schools", description: "Web development tutorials." },
-            { url: "https://www.mdn.web.dev", title: "MDN Web Docs", description: "Web development documentation." },
-
-            // ===== ENTERTAINMENT =====
-            { url: "https://www.imdb.com", title: "IMDb", description: "Movie and TV database." },
-            { url: "https://www.rottentomatoes.com", title: "Rotten Tomatoes", description: "Movie reviews and ratings." },
-            { url: "https://www.metacritic.com", title: "Metacritic", description: "Reviews of movies, games, music." },
-            { url: "https://www.spotify.com", title: "Spotify", description: "Music streaming." },
-            { url: "https://www.soundcloud.com", title: "SoundCloud", description: "Audio distribution platform." },
-            { url: "https://www.bandcamp.com", title: "Bandcamp", description: "Independent music platform." },
-            { url: "https://www.last.fm", title: "Last.fm", description: "Music discovery." },
-            { url: "https://www.genius.com", title: "Genius", description: "Song lyrics and knowledge." },
-            { url: "https://www.tmdb.org", title: "The Movie Database", description: "Movie and TV data." },
-            { url: "https://www.anilist.co", title: "AniList", description: "Anime and manga database." },
-
-            // ===== GOVERNMENT & SERVICES =====
-            { url: "https://www.usa.gov", title: "USA.gov", description: "US government portal." },
-            { url: "https://www.gov.uk", title: "GOV.UK", description: "UK government services." },
-            { url: "https://www.canada.ca", title: "Canada.ca", description: "Canadian government portal." },
-            { url: "https://www.irs.gov", title: "IRS", description: "US Internal Revenue Service." },
-            { url: "https://www.ssa.gov", title: "Social Security", description: "US Social Security Administration." },
-            { url: "https://www.dmv.org", title: "DMV", description: "Department of Motor Vehicles." },
-            { url: "https://www.hhs.gov", title: "HHS", description: "US Health and Human Services." },
-            { url: "https://www.fda.gov", title: "FDA", description: "US Food and Drug Administration." },
-            { url: "https://www.cdc.gov", title: "CDC", description: "Centers for Disease Control." },
-            { url: "https://www.nih.gov", title: "NIH", description: "National Institutes of Health." },
-
-            // ===== FINANCE =====
-            { url: "https://www.chase.com", title: "Chase", description: "Banking and financial services." },
-            { url: "https://www.bankofamerica.com", title: "Bank of America", description: "Banking and financial services." },
-            { url: "https://www.wellsfargo.com", title: "Wells Fargo", description: "Banking and financial services." },
-            { url: "https://www.capitalone.com", title: "Capital One", description: "Banking and credit cards." },
-            { url: "https://www.paypal.com", title: "PayPal", description: "Online payment platform." },
-            { url: "https://www.venmo.com", title: "Venmo", description: "Peer-to-peer payments." },
-            { url: "https://www.creditkarma.com", title: "Credit Karma", description: "Credit monitoring and reports." },
-            { url: "https://www.nerdwallet.com", title: "NerdWallet", description: "Financial advice and tools." },
-            { url: "https://www.bankrate.com", title: "Bankrate", description: "Financial rates and calculators." },
-            { url: "https://www.ameritrade.com", title: "Ameritrade", description: "Online stock trading." },
-
-            // ===== HEALTH & MEDICAL =====
-            { url: "https://www.webmd.com", title: "WebMD", description: "Health information and advice." },
-            { url: "https://www.mayoclinic.org", title: "Mayo Clinic", description: "Medical information and care." },
-            { url: "https://www.healthline.com", title: "Healthline", description: "Health news and advice." },
-            { url: "https://www.verywellhealth.com", title: "Verywell Health", description: "Health information." },
-            { url: "https://www.medscape.com", title: "Medscape", description: "Medical news and resources." },
-            { url: "https://www.drugs.com", title: "Drugs.com", description: "Drug information and interactions." },
-            { url: "https://www.nhs.uk", title: "NHS", description: "UK National Health Service." },
-            { url: "https://www.msdmanuals.com", title: "MSD Manuals", description: "Medical reference." },
-            { url: "https://www.cancer.org", title: "American Cancer Society", description: "Cancer information." },
-            { url: "https://www.heart.org", title: "American Heart Association", description: "Heart health information." },
-
-            // ===== TRAVEL =====
-            { url: "https://www.booking.com", title: "Booking.com", description: "Hotel and accommodation booking." },
-            { url: "https://www.expedia.com", title: "Expedia", description: "Travel booking site." },
-            { url: "https://www.travelocity.com", title: "Travelocity", description: "Travel booking site." },
-            { url: "https://www.orbitz.com", title: "Orbitz", description: "Travel booking site." },
-            { url: "https://www.priceline.com", title: "Priceline", description: "Travel booking site." },
-            { url: "https://www.kayak.com", title: "Kayak", description: "Travel search engine." },
-            { url: "https://www.airbnb.com", title: "Airbnb", description: "Vacation rentals." },
-            { url: "https://www.vrbo.com", title: "VRBO", description: "Vacation rentals." },
-            { url: "https://www.tripadvisor.com", title: "TripAdvisor", description: "Travel reviews and booking." },
-            { url: "https://www.fodors.com", title: "Fodor's", description: "Travel guides." },
-
-            // ===== SPORTS =====
-            { url: "https://www.espn.com", title: "ESPN", description: "Sports news and scores." },
-            { url: "https://www.foxsports.com", title: "Fox Sports", description: "Sports news and scores." },
-            { url: "https://www.cbssports.com", title: "CBS Sports", description: "Sports news and scores." },
-            { url: "https://www.sports.yahoo.com", title: "Yahoo Sports", description: "Sports news and scores." },
-            { url: "https://www.bleacherreport.com", title: "Bleacher Report", description: "Sports news and analysis." },
-            { url: "https://www.thescore.com", title: "The Score", description: "Sports news and scores." },
-            { url: "https://www.sportsnet.com", title: "Sportsnet", description: "Canadian sports news." },
-            { url: "https://www.tsn.com", title: "TSN", description: "Canadian sports network." },
-            { url: "https://www.sky.com/sports", title: "Sky Sports", description: "UK sports news." },
-            { url: "https://www.bbc.com/sports", title: "BBC Sport", description: "UK sports news." },
-
-            // ===== FOOD =====
-            { url: "https://www.foodnetwork.com", title: "Food Network", description: "Cooking shows and recipes." },
-            { url: "https://www.allrecipes.com", title: "Allrecipes", description: "Recipe collection." },
-            { url: "https://www.epicurious.com", title: "Epicurious", description: "Recipes and cooking tips." },
-            { url: "https://www.bonappetit.com", title: "Bon Appétit", description: "Food and cooking magazine." },
-            { url: "https://www.seriouseats.com", title: "Serious Eats", description: "Food and cooking blog." },
-            { url: "https://www.simplyrecipes.com", title: "Simply Recipes", description: "Easy recipes." },
-            { url: "https://www.tasteofhome.com", title: "Taste of Home", description: "Home cooking recipes." },
-            { url: "https://www.foodandwine.com", title: "Food & Wine", description: "Food and wine magazine." },
-            { url: "https://www.saveur.com", title: "Saveur", description: "Food culture and recipes." },
-            { url: "https://www.cookinglight.com", title: "Cooking Light", description: "Healthy recipes." },
-
-            // ===== GAMING =====
-            { url: "https://www.steampowered.com", title: "Steam", description: "Digital game distribution." },
-            { url: "https://www.epicgames.com", title: "Epic Games", description: "Game developer and store." },
-            { url: "https://www.ign.com", title: "IGN", description: "Video game news and reviews." },
-            { url: "https://www.gamespot.com", title: "GameSpot", description: "Video game news and reviews." },
-            { url: "https://www.pcgamer.com", title: "PC Gamer", description: "PC gaming news." },
-            { url: "https://www.rockpapershotgun.com", title: "Rock Paper Shotgun", description: "PC gaming news." },
-            { url: "https://www.polygon.com", title: "Polygon", description: "Gaming news and culture." },
-            { url: "https://www.kotaku.com", title: "Kotaku", description: "Gaming news and reviews." },
-            { url: "https://www.destructoid.com", title: "Destructoid", description: "Gaming news and reviews." },
-            { url: "https://www.eurogamer.net", title: "Eurogamer", description: "Gaming news and reviews." },
-            { url: "https://www.itch.io", title: "itch.io", description: "Digital game distribution." },
-            { url: "https://www.microsoft.com", title: "microslop", description: "ai bloat virus os distribution." },
-            { url: "https://www.deepseek.com", title: "deepseek", description: "deepseek ai llm free distribution." },
-            { url: "https://www.chatgpt.com", title: "chatgpt", description: "chatgpt openai ai llm free distribution." },
-
-            // ===== MORE SITES (add more here) =====
-            // You can add hundreds more sites here!
-            // Just follow the format: { url: "https://...", title: "...", description: "..." },
-
-            // ===== PLACEHOLDER FOR MORE SITES =====
-            // Add your additional 800+ sites here following the same format
-            // Use sites from: search engines, social media, news, tech, education, 
-            // entertainment, e-commerce, finance, health, travel, sports, food, gaming, etc.
+            { "url": "https://www.google.com", "title": "Google", "description": "The world's largest search engine." },
+            { "url": "https://www.facebook.com", "title": "Facebook", "description": "Social media platform." },
+            { "url": "https://www.youtube.com", "title": "YouTube", "description": "World's largest video sharing platform." },
+            { "url": "https://www.github.com", "title": "GitHub", "description": "Code hosting and collaboration." },
+            { "url": "https://www.wikipedia.org", "title": "Wikipedia", "description": "The free encyclopedia." },
+            { "url": "https://www.reddit.com", "title": "Reddit", "description": "The front page of the internet." },
+            { "url": "https://www.linux.org", "title": "Linux", "description": "The Linux operating system." },
+            { "url": "https://www.unix.org", "title": "Unix", "description": "The Unix operating system." },
+            { "url": "https://www.google.com", "title": "Google", "description": "The world's largest search engine." },
+            { "url": "https://www.bing.com", "title": "Bing", "description": "Microsoft's search engine." },
+            { "url": "https://www.yahoo.com", "title": "Yahoo", "description": "News, email, and search." },
+            { "url": "https://www.duckduckgo.com", "title": "DuckDuckGo", "description": "Privacy-focused search engine." },
+            { "url": "https://www.baidu.com", "title": "Baidu", "description": "China's largest search engine." },
+            { "url": "https://www.yandex.com", "title": "Yandex", "description": "Russian search engine." },
+            { "url": "https://www.ecosia.org", "title": "Ecosia", "description": "Search engine that plants trees." },
+            { "url": "https://www.startpage.com", "title": "Startpage", "description": "Private search engine." },
+            { "url": "https://www.qwant.com", "title": "Qwant", "description": "European privacy search engine." },
+            { "url": "https://www.dogpile.com", "title": "Dogpile", "description": "Meta-search engine." },
+            { "url": "https://www.twitter.com", "title": "X (Twitter)", "description": "Micro-blogging social network." },
+            { "url": "https://www.instagram.com", "title": "Instagram", "description": "Photo and video sharing." },
+            { "url": "https://www.linkedin.com", "title": "LinkedIn", "description": "Professional networking." },
+            { "url": "https://www.tiktok.com", "title": "TikTok", "description": "Short-form video platform." },
+            { "url": "https://www.pinterest.com", "title": "Pinterest", "description": "Visual discovery engine." },
+            { "url": "https://www.tumblr.com", "title": "Tumblr", "description": "Microblogging platform." },
+            { "url": "https://www.snapchat.com", "title": "Snapchat", "description": "Disappearing photo messaging." },
+            { "url": "https://www.quora.com", "title": "Quora", "description": "Question and answer platform." },
+            { "url": "https://www.netflix.com", "title": "Netflix", "description": "Streaming movies and TV shows." },
+            { "url": "https://www.hulu.com", "title": "Hulu", "description": "Streaming TV shows and movies." },
+            { "url": "https://www.disneyplus.com", "title": "Disney+", "description": "Disney, Pixar, Marvel, Star Wars streaming." },
+            { "url": "https://www.amazon.com/primevideo", "title": "Amazon Prime Video", "description": "Streaming service from Amazon." },
+            { "url": "https://www.twitch.tv", "title": "Twitch", "description": "Live streaming for gamers." },
+            { "url": "https://www.vimeo.com", "title": "Vimeo", "description": "High-quality video platform." },
+            { "url": "https://www.dailymotion.com", "title": "Dailymotion", "description": "Video sharing platform." },
+            { "url": "https://www.peacocktv.com", "title": "Peacock", "description": "NBCUniversal's streaming service." },
+            { "url": "https://www.paramountplus.com", "title": "Paramount+", "description": "Streaming from Paramount." },
+            { "url": "https://www.amazon.com", "title": "Amazon", "description": "The world's largest online retailer." },
+            { "url": "https://www.ebay.com", "title": "eBay", "description": "Online auction and shopping." },
+            { "url": "https://www.walmart.com", "title": "Walmart", "description": "Retail giant online store." },
+            { "url": "https://www.target.com", "title": "Target", "description": "Retail store online." },
+            { "url": "https://www.bestbuy.com", "title": "Best Buy", "description": "Electronics retailer." },
+            { "url": "https://www.costco.com", "title": "Costco", "description": "Membership warehouse club." },
+            { "url": "https://www.alibaba.com", "title": "Alibaba", "description": "Global e-commerce platform." },
+            { "url": "https://www.etsy.com", "title": "Etsy", "description": "Handmade and vintage items." },
+            { "url": "https://www.wayfair.com", "title": "Wayfair", "description": "Furniture and home goods." },
+            { "url": "https://www.zillow.com", "title": "Zillow", "description": "Real estate marketplace." },
+            { "url": "https://www.cnn.com", "title": "CNN", "description": "Breaking news, latest news." },
+            { "url": "https://www.bbc.com", "title": "BBC", "description": "British Broadcasting Corporation." },
+            { "url": "https://www.nytimes.com", "title": "The New York Times", "description": "In-depth news coverage." },
+            { "url": "https://www.washingtonpost.com", "title": "The Washington Post", "description": "US news and politics." },
+            { "url": "https://www.foxnews.com", "title": "Fox News", "description": "US news network." },
+            { "url": "https://www.nbcnews.com", "title": "NBC News", "description": "US news and analysis." },
+            { "url": "https://www.theguardian.com", "title": "The Guardian", "description": "International news." },
+            { "url": "https://www.reuters.com", "title": "Reuters", "description": "Global news agency." },
+            { "url": "https://www.bloomberg.com", "title": "Bloomberg", "description": "Financial news and data." },
+            { "url": "https://www.forbes.com", "title": "Forbes", "description": "Business and financial news." },
+            { "url": "https://www.stackoverflow.com", "title": "Stack Overflow", "description": "Q&A for programmers." },
+            { "url": "https://www.dev.to", "title": "Dev.to", "description": "Developer community." },
+            { "url": "https://www.medium.com", "title": "Medium", "description": "Writing platform." },
+            { "url": "https://www.hackernews.com", "title": "Hacker News", "description": "Tech news aggregator." },
+            { "url": "https://www.codepen.io", "title": "CodePen", "description": "Front-end developer playground." },
+            { "url": "https://www.jsfiddle.net", "title": "JSFiddle", "description": "Online code editor." },
+            { "url": "https://www.replit.com", "title": "Replit", "description": "Online coding environment." },
+            { "url": "https://www.glitch.com", "title": "Glitch", "description": "Build and host web apps." },
+            { "url": "https://www.codesandbox.io", "title": "CodeSandbox", "description": "Online IDE for web development." },
+            { "url": "https://www.observablehq.com", "title": "Observable", "description": "Data exploration and prototyping." },
+            { "url": "https://www.kaggle.com", "title": "Kaggle", "description": "Data science platform." },
+            { "url": "https://www.heroku.com", "title": "Heroku", "description": "Cloud application platform." },
+            { "url": "https://www.netlify.com", "title": "Netlify", "description": "Web hosting platform." },
+            { "url": "https://www.vercel.com", "title": "Vercel", "description": "Web deployment platform." },
+            { "url": "https://www.firebase.com", "title": "Firebase", "description": "Google's app development platform." },
+            { "url": "https://www.aws.amazon.com", "title": "AWS", "description": "Amazon Web Services." },
+            { "url": "https://www.azure.microsoft.com", "title": "Microsoft Azure", "description": "Microsoft's cloud platform." },
+            { "url": "https://www.digitalocean.com", "title": "DigitalOcean", "description": "Cloud hosting provider." },
+            { "url": "https://www.linode.com", "title": "Linode", "description": "Cloud hosting provider." },
+            { "url": "https://www.vultr.com", "title": "Vultr", "description": "Cloud hosting provider." },
+            { "url": "https://www.hetzner.com", "title": "Hetzner", "description": "Cloud hosting provider." },
+            { "url": "https://www.siteground.com", "title": "SiteGround", "description": "Web hosting provider." },
+            { "url": "https://www.hostinger.com", "title": "Hostinger", "description": "Web hosting provider." },
+            { "url": "https://www.dreamhost.com", "title": "DreamHost", "description": "Web hosting provider." },
+            { "url": "https://www.inmotionhosting.com", "title": "InMotion Hosting", "description": "Web hosting provider." },
+            { "url": "https://www.wpengine.com", "title": "WP Engine", "description": "WordPress hosting provider." },
+            { "url": "https://www.kinsta.com", "title": "Kinsta", "description": "WordPress hosting provider." },
+            { "url": "https://www.cloudflare.com", "title": "Cloudflare", "description": "CDN and security provider." },
+            { "url": "https://www.fastly.com", "title": "Fastly", "description": "CDN provider." },
+            { "url": "https://www.akamai.com", "title": "Akamai", "description": "CDN provider." },
+            { "url": "https://www.wordpress.com", "title": "WordPress.com", "description": "Website builder." },
+            { "url": "https://www.shopify.com", "title": "Shopify", "description": "E-commerce platform." },
+            { "url": "https://www.squarespace.com", "title": "Squarespace", "description": "Website builder." },
+            { "url": "https://www.wix.com", "title": "Wix", "description": "Website builder." },
+            { "url": "https://www.webflow.com", "title": "Webflow", "description": "Website builder." },
+            { "url": "https://www.drupal.org", "title": "Drupal", "description": "Open source CMS." },
+            { "url": "https://www.joomla.org", "title": "Joomla", "description": "Open source CMS." },
+            { "url": "https://www.ghost.org", "title": "Ghost", "description": "Open source CMS." },
+            { "url": "https://www.imdb.com", "title": "IMDb", "description": "Movie and TV database." },
+            { "url": "https://www.rottentomatoes.com", "title": "Rotten Tomatoes", "description": "Movie reviews and ratings." },
+            { "url": "https://www.metacritic.com", "title": "Metacritic", "description": "Reviews of movies, games, music." },
+            { "url": "https://www.spotify.com", "title": "Spotify", "description": "Music streaming." },
+            { "url": "https://www.soundcloud.com", "title": "SoundCloud", "description": "Audio distribution platform." },
+            { "url": "https://www.bandcamp.com", "title": "Bandcamp", "description": "Independent music platform." },
+            { "url": "https://www.last.fm", "title": "Last.fm", "description": "Music discovery." },
+            { "url": "https://www.genius.com", "title": "Genius", "description": "Song lyrics and knowledge." },
+            { "url": "https://www.anilist.co", "title": "AniList", "description": "Anime and manga database." },
+            { "url": "https://www.usa.gov", "title": "USA.gov", "description": "US government portal." },
+            { "url": "https://www.gov.uk", "title": "GOV.UK", "description": "UK government services." },
+            { "url": "https://www.canada.ca", "title": "Canada.ca", "description": "Canadian government portal." },
+            { "url": "https://www.irs.gov", "title": "IRS", "description": "US Internal Revenue Service." },
+            { "url": "https://www.fda.gov", "title": "FDA", "description": "US Food and Drug Administration." },
+            { "url": "https://www.cdc.gov", "title": "CDC", "description": "Centers for Disease Control." },
+            { "url": "https://www.nih.gov", "title": "NIH", "description": "National Institutes of Health." },
+            { "url": "https://www.chase.com", "title": "Chase", "description": "Banking and financial services." },
+            { "url": "https://www.bankofamerica.com", "title": "Bank of America", "description": "Banking and financial services." },
+            { "url": "https://www.wellsfargo.com", "title": "Wells Fargo", "description": "Banking and financial services." },
+            { "url": "https://www.capitalone.com", "title": "Capital One", "description": "Banking and credit cards." },
+            { "url": "https://www.paypal.com", "title": "PayPal", "description": "Online payment platform." },
+            { "url": "https://www.venmo.com", "title": "Venmo", "description": "Peer-to-peer payments." },
+            { "url": "https://www.creditkarma.com", "title": "Credit Karma", "description": "Credit monitoring and reports." },
+            { "url": "https://www.nerdwallet.com", "title": "NerdWallet", "description": "Financial advice and tools." },
+            { "url": "https://www.bankrate.com", "title": "Bankrate", "description": "Financial rates and calculators." },
+            { "url": "https://www.webmd.com", "title": "WebMD", "description": "Health information and advice." },
+            { "url": "https://www.mayoclinic.org", "title": "Mayo Clinic", "description": "Medical information and care." },
+            { "url": "https://www.healthline.com", "title": "Healthline", "description": "Health news and advice." },
+            { "url": "https://www.verywellhealth.com", "title": "Verywell Health", "description": "Health information." },
+            { "url": "https://www.medscape.com", "title": "Medscape", "description": "Medical news and resources." },
+            { "url": "https://www.drugs.com", "title": "Drugs.com", "description": "Drug information and interactions." },
+            { "url": "https://www.nhs.uk", "title": "NHS", "description": "UK National Health Service." },
+            { "url": "https://www.msdmanuals.com", "title": "MSD Manuals", "description": "Medical reference." },
+            { "url": "https://www.cancer.org", "title": "American Cancer Society", "description": "Cancer information." },
+            { "url": "https://www.heart.org", "title": "American Heart Association", "description": "Heart health information." },
+            { "url": "https://www.booking.com", "title": "Booking.com", "description": "Hotel and accommodation booking." },
+            { "url": "https://www.expedia.com", "title": "Expedia", "description": "Travel booking site." },
+            { "url": "https://www.travelocity.com", "title": "Travelocity", "description": "Travel booking site." },
+            { "url": "https://www.orbitz.com", "title": "Orbitz", "description": "Travel booking site." },
+            { "url": "https://www.priceline.com", "title": "Priceline", "description": "Travel booking site." },
+            { "url": "https://www.kayak.com", "title": "Kayak", "description": "Travel search engine." },
+            { "url": "https://www.airbnb.com", "title": "Airbnb", "description": "Vacation rentals." },
+            { "url": "https://www.vrbo.com", "title": "VRBO", "description": "Vacation rentals." },
+            { "url": "https://www.tripadvisor.com", "title": "TripAdvisor", "description": "Travel reviews and booking." },
+            { "url": "https://www.espn.com", "title": "ESPN", "description": "Sports news and scores." },
+            { "url": "https://www.foxsports.com", "title": "Fox Sports", "description": "Sports news and scores." },
+            { "url": "https://www.cbssports.com", "title": "CBS Sports", "description": "Sports news and scores." },
+            { "url": "https://www.sports.yahoo.com", "title": "Yahoo Sports", "description": "Sports news and scores." },
+            { "url": "https://www.bleacherreport.com", "title": "Bleacher Report", "description": "Sports news and analysis." },
+            { "url": "https://www.thescore.com", "title": "The Score", "description": "Sports news and scores." },
+            { "url": "https://www.sportsnet.com", "title": "Sportsnet", "description": "Canadian sports news." },
+            { "url": "https://www.tsn.com", "title": "TSN", "description": "Canadian sports network." },
+            { "url": "https://www.sky.com/sports", "title": "Sky Sports", "description": "UK sports news." },
+            { "url": "https://www.bbc.com/sports", "title": "BBC Sport", "description": "UK sports news." },
+            { "url": "https://www.foodnetwork.com", "title": "Food Network", "description": "Cooking shows and recipes." },
+            { "url": "https://www.allrecipes.com", "title": "Allrecipes", "description": "Recipe collection." },
+            { "url": "https://www.epicurious.com", "title": "Epicurious", "description": "Recipes and cooking tips." },
+            { "url": "https://www.bonappetit.com", "title": "Bon Appétit", "description": "Food and cooking magazine." },
+            { "url": "https://www.seriouseats.com", "title": "Serious Eats", "description": "Food and cooking blog." },
+            { "url": "https://www.simplyrecipes.com", "title": "Simply Recipes", "description": "Easy recipes." },
+            { "url": "https://www.tasteofhome.com", "title": "Taste of Home", "description": "Home cooking recipes." },
+            { "url": "https://www.foodandwine.com", "title": "Food & Wine", "description": "Food and wine magazine." },
+            { "url": "https://www.saveur.com", "title": "Saveur", "description": "Food culture and recipes." },
+            { "url": "https://www.cookinglight.com", "title": "Cooking Light", "description": "Healthy recipes." },
+            { "url": "https://www.steampowered.com", "title": "Steam", "description": "Digital game distribution." },
+            { "url": "https://www.epicgames.com", "title": "Epic Games", "description": "Game developer and store." },
+            { "url": "https://www.ign.com", "title": "IGN", "description": "Video game news and reviews." },
+            { "url": "https://www.gamespot.com", "title": "GameSpot", "description": "Video game news and reviews." },
+            { "url": "https://www.pcgamer.com", "title": "PC Gamer", "description": "PC gaming news." },
+            { "url": "https://www.rockpapershotgun.com", "title": "Rock Paper Shotgun", "description": "PC gaming news." },
+            { "url": "https://www.polygon.com", "title": "Polygon", "description": "Gaming news and culture." },
+            { "url": "https://www.kotaku.com", "title": "Kotaku", "description": "Gaming news and reviews." },
+            { "url": "https://www.destructoid.com", "title": "Destructoid", "description": "Gaming news and reviews." },
+            { "url": "https://www.eurogamer.net", "title": "Eurogamer", "description": "Gaming news and reviews." },
+            { "url": "https://www.discord.com", "title": "Discord", "description": "Chat platform for gamers." },
+            { "url": "https://www.roblox.com", "title": "Roblox", "description": "Online game platform." },
+            { "url": "https://www.leagueoflegends.com", "title": "League of Legends", "description": "MOBA game." },
+            { "url": "https://www.dota2.com", "title": "Dota 2", "description": "MOBA game." },
+            { "url": "https://www.valorant.com", "title": "Valorant", "description": "Tactical shooter game." },
+            { "url": "https://www.apexlegends.com", "title": "Apex Legends", "description": "Battle royale game." },
+            { "url": "https://www.gog.com", "title": "GOG", "description": "DRM-free game store." },
+            { "url": "https://www.humblebundle.com", "title": "Humble Bundle", "description": "Game bundle site." },
+            { "url": "https://www.itch.io", "title": "itch.io", "description": "Indie game platform." },
+            { "url": "https://www.nintendo.com", "title": "Nintendo", "description": "Nintendo official site." },
+            { "url": "https://www.playstation.com", "title": "PlayStation", "description": "PlayStation official site." },
+            { "url": "https://www.xbox.com", "title": "Xbox", "description": "Xbox official site." },
+            { "url": "https://www.chat.openai.com", "title": "ChatGPT", "description": "AI chatbot by OpenAI." },
+            { "url": "https://www.claude.ai", "title": "Claude", "description": "AI assistant by Anthropic." },
+            { "url": "https://www.gemini.google.com", "title": "Gemini", "description": "AI by Google." },
+            { "url": "https://www.perplexity.ai", "title": "Perplexity", "description": "AI search engine." },
+            { "url": "https://www.deepseek.com", "title": "DeepSeek", "description": "AI chat platform." }
         ];
 
         // ==========================================
@@ -484,6 +461,8 @@
         let currentResults = [];
         let currentPage = 1;
         const resultsPerPage = 10;
+
+        console.log(`✅ Loaded ${allSites.length} sites from embedded data`);
 
         function performSearch() {
             const query = document.getElementById('search-input').value.trim();
@@ -511,12 +490,22 @@
         }
 
         function performSearchLogic(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
             const results = allSites.filter(site => {
-                const searchTerm = query.toLowerCase();
-                const titleMatch = site.title.toLowerCase().includes(searchTerm);
-                const descMatch = site.description.toLowerCase().includes(searchTerm);
-                const urlMatch = site.url.toLowerCase().includes(searchTerm);
-                return titleMatch || descMatch || urlMatch;
+                const title = (site.title || '').toLowerCase();
+                const description = (site.description || '').toLowerCase();
+                const url = (site.url || '').toLowerCase();
+                
+                const titleMatch = title.includes(searchTerm);
+                const descMatch = description.includes(searchTerm);
+                const urlMatch = url.includes(searchTerm);
+                
+                // Also check domain name
+                const domain = url.replace('https://', '').replace('http://', '').replace('www.', '').split('/')[0];
+                const domainMatch = domain.includes(searchTerm);
+                
+                return titleMatch || descMatch || urlMatch || domainMatch;
             });
 
             currentResults = results;
@@ -564,7 +553,7 @@
                 }
                 
                 item.innerHTML = `
-                    <div class="result-title" onclick="window.open('${result.url}', '_blank')">${result.title}</div>
+                    <div class="result-title" onclick="window.open('${result.url}', '_blank')">${result.title || 'Untitled'}</div>
                     <div class="result-url">${result.url}</div>
                     <div class="result-description">${description}</div>
                 `;
@@ -608,7 +597,7 @@
             }
         });
 
-        console.log('🕷️ Trawler loaded! 1,000+ sites ready to search.');
+        console.log('🕷️ Trawler Search Engine ready!');
     </script>
 </body>
 </html>
